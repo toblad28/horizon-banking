@@ -1,139 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horizon Banking | Demo</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { background: #f4f7fb; color: #172033; }
-    .demo-banner { background: #fff3cd; color: #664d03; text-align: center; padding: 10px; font-size: 13px; font-weight: bold; }
-    header { background: #102a43; color: white; padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 22px; font-weight: bold; }
-    .user { font-size: 14px; }
-    main { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-    .welcome { margin-bottom: 25px; }
-    .welcome h1 { font-size: 27px; margin-bottom: 7px; }
-    .welcome p { color: #667085; }
-    .balance-card { background: #102a43; color: white; border-radius: 18px; padding: 28px; margin-bottom: 25px; }
-    .balance-label { font-size: 14px; opacity: .8; }
-    .balance { font-size: 38px; font-weight: bold; margin: 12px 0; }
-    .account { font-size: 14px; opacity: .8; }
-    .actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
-    .action { background: white; border-radius: 12px; padding: 18px; text-align: center; border: 1px solid #e5e7eb; cursor: pointer; text-decoration: none; color: inherit; transition: 0.2s; }
-    .action:hover { background: #eef5fb; transform: translateY(-2px); }
-    .action-icon { font-size: 25px; margin-bottom: 8px; }
-    .section { background: white; border-radius: 15px; padding: 22px; margin-bottom: 25px; border: 1px solid #e5e7eb; }
-    .section h2 { font-size: 19px; margin-bottom: 18px; }
-    .transaction { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #edf0f4; }
-    .transaction:last-child { border-bottom: none; }
-    .transaction-name { font-weight: bold; }
-    .transaction-date { font-size: 12px; color: #7a8495; margin-top: 4px; }
-    .amount { font-weight: bold; }
-    .positive { color: #17803d; }
-    .negative { color: #b42318; }
-    footer { text-align: center; color: #7a8495; font-size: 12px; padding: 25px; }
-    @media (max-width: 700px) {
-      .actions { grid-template-columns: repeat(2, 1fr); }
-      .balance { font-size: 31px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horizon Banking - Demo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; margin: 0; padding: 0; }
+  .header { background: #0a2540; color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .container { padding: 20px; max-width: 600px; margin: auto; }
+  .balance-card { background: #0a2540; color: white; padding: 24px; border-radius: 16px; margin-bottom: 20px; }
+  .balance-card h2 { font-size: 32px; margin: 8px 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .btn { background: white; padding: 16px; border-radius: 12px; text-align: center; border: none; cursor: pointer; font-weight: 600; }
+  .btn-primary { background: #0a2540; color: white; width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 16px; cursor: pointer; }
+  .insights-card { background: white; padding: 16px; border-radius: 12px; margin-bottom: 20px; }
+  .transactions { background: white; padding: 16px; border-radius: 12px; }
+  .transaction { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+  .demo-banner { background: #fff3cd; color: #856404; text-align: center; padding: 8px; font-size: 12px; font-weight: 600; }
+  
+  /* Login styles */
+  #loginPage { display: flex; justify-content: center; align-items: center; height: 100vh; background: #0a2540; }
+  .login-box { background: white; padding: 32px; border-radius: 16px; width: 90%; max-width: 400px; }
+  .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+  #dashboard { display: none; }
+  .logout-btn { background: transparent; border: 1px solid white; color: white; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+</style>
 </head>
 <body>
-  <div class="demo-banner">DEMO — NOT A REAL BANK • ALL INFORMATION ON THIS PAGE IS FICTIONAL</div>
 
-  <header>
-    <div class="logo">Horizon Banking</div>
-    <div class="user">Demo Account</div>
-  </header>
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="login-box">
+    <h2 style="text-align:center; color:#0a2540">Horizon Banking</h2>
+    <p style="text-align:center; color:#666">Demo Login</p>
+    <p style="text-align:center; font-size:12px; background:#eef; padding:8px; border-radius:8px">
+      Use: <b>demo@horizon.com</b> / <b>password123</b>
+    </p>
+    <input type="email" id="email" placeholder="Email" value="demo@horizon.com">
+    <input type="password" id="password" placeholder="Password" value="password123">
+    <button class="btn-primary" onclick="login()">Login</button>
+    <p id="error" style="color:red; text-align:center; display:none">Invalid credentials</p>
+  </div>
+</div>
 
-  <main>
-    <div class="welcome">
-      <h1>Welcome back</h1>
-      <p>Here's your fictional account overview.</p>
-    </div>
-
-    <div class="balance-card">
-      <div class="balance-label">Available Balance</div>
-      <div class="balance">$550,000.00</div>
-      <div class="account">Checking Account •••• 4821</div>
-    </div>
-
-    <div class="actions">
-      <a href="transfer.html" class="action">
-        <div class="action-icon">↔️</div>
-        <strong>Transfer</strong>
-      </a>
-      <a href="deposit.html" class="action">
-        <div class="action-icon">💰</div>
-        <strong>Deposit</strong>
-      </a>
-      <a href="cards.html" class="action">
-        <div class="action-icon">💳</div>
-        <strong>Cards</strong>
-      </a>
-      <a href="settings.html" class="action">
-        <div class="action-icon">⚙️</div>
-        <strong>Settings</strong>
-      </a>
-    </div>
-
-    <div class="section">
-      <h2>Recent Transactions</h2>
-
-      <div class="transaction">
-        <div>
-          <div class="transaction-name">Salary Deposit</div>
-          <div class="transaction-date">August 15, 2026</div>
-        </div>
-        <div class="amount positive">+$8,500.00</div>
-      </div>
-
-      <div class="transaction">
-        <div>
-          <div class="transaction-name">Investment Return</div>
-          <div class="transaction-date">August 14, 2026</div>
-        </div>
-        <div class="amount positive">+$12,400.00</div>
-      </div>
-
-      <div class="transaction">
-        <div>
-          <div class="transaction-name">Apple Store</div>
-          <div class="transaction-date">August 13, 2026</div>
-        </div>
-        <div class="amount negative">-$1,299.00</div>
-      </div>
-
-      <div class="transaction">
-        <div>
-          <div class="transaction-name">City Market</div>
-          <div class="transaction-date">August 12, 2026</div>
-        </div>
-        <div class="amount negative">-$86.42</div>
-      </div>
-
-      <div class="transaction">
-        <div>
-          <div class="transaction-name">Freelance Payment</div>
-          <div class="transaction-date">August 10, 2026</div>
-        </div>
-        <div class="amount positive">+$3,200.00</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Account Information</h2>
-      <p><strong>Account type:</strong> Checking</p>
-      <p><strong>Account number:</strong> •••• 4821</p>
-      <p><strong>Status:</strong> Demo account</p>
-      <p><strong>Account Holder:</strong> Demo User</p>
-    </div>
-  </main>
-
-  <footer>
-    Horizon Banking Demo © 2026<br>
-    This website is fictional and has no real banking services.
-  </footer>
-</body>
-</html>
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="demo-banner">DEMO MODE - NOT A REAL BANK - ALL DATA IS FICTIONAL</div
