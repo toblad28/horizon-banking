@@ -175,3 +175,367 @@
     .negative { color: #dc2626; }
 
     footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 24px 0 40px;
+    }
+
+    #loginPage, #signupPage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: var(--primary);
+    }
+    .auth-box {
+      background: var(--card);
+      padding: 32px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+    .auth-box input {
+      width: 100%;
+      padding: 13px 14px;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: 8px;
+    }
+    .btn-primary:hover { opacity: 0.92; }
+    #dashboard { display: none; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: var(--card);
+      padding: 28px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+    .modal-content h3 { margin-bottom: 16px; font-size: 18px; }
+    .modal-content input {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 8px 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    @media (max-width: 700px) {
+      .actions { grid-template-columns: repeat(2, 1fr); }
+      .balance { font-size: 30px; }
+      .balance-card {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 18px;
+      }
+      .gas-box { align-self: flex-end; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="auth-box">
+    <h2 style="text-align:center; color:var(--primary); margin-bottom:10px; font-size:22px;">Horizon Banking</h2>
+    <p style="text-align:center; font-size:12px; background:#eef2ff; padding:8px 12px; border-radius:8px; margin-bottom:16px; color:#3730a3;">
+      Demo: melissa@horizon.com / password123
+    </p>
+    <input type="email" id="email" placeholder="Email" value="melissa@horizon.com">
+    <input type="password" id="password" placeholder="Password" value="password123">
+    <button class="btn-primary" onclick="login()">Login</button>
+    <p style="text-align:center; margin-top:14px; font-size:14px;">
+      No account? <a href="#" onclick="showSignup()" style="color:#3b82f6;">Sign Up</a>
+    </p>
+    <p id="error" style="color:#dc2626; text-align:center; display:none; margin-top:10px; font-size:14px;">Invalid credentials</p>
+  </div>
+</div>
+
+<div id="signupPage" style="display:none">
+  <div class="auth-box">
+    <h2 style="text-align:center; color:var(--primary); margin-bottom:16px; font-size:22px;">Create Demo Account</h2>
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="email" id="newEmail" placeholder="Email">
+    <input type="password" id="newPassword" placeholder="Password">
+    <button class="btn-primary" onclick="signup()">Create Account</button>
+    <p style="text-align:center; margin-top:14px; font-size:14px;">
+      Have account? <a href="#" onclick="showLogin()" style="color:#3b82f6;">Login</a>
+    </p>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div class="demo-banner">DEMO — NOT A REAL BANK • ALL INFORMATION ON THIS PAGE IS FICTIONAL</div>
+  <header>
+    <div class="logo">Horizon Banking</div>
+    <div class="header-actions">
+      <button onclick="toggleTheme()">🌙</button>
+      <button onclick="showProfile()">👤</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="welcome">
+      <h1>Welcome back, <span id="userName">Melissa Sue Rose</span></h1>
+      <p>Here's your fictional account overview.</p>
+    </div>
+
+    <div class="balance-card">
+      <div>
+        <div class="balance-label">Available Balance</div>
+        <div class="balance" id="balanceAmount">$2,000,000.00</div>
+        <div class="account">Checking Account •••• 4821</div>
+      </div>
+      <div class="gas-box">
+        <div class="gas-label">Network Fee</div>
+        <div class="gas-amount">
+          <span>⛽</span>
+          <span id="gasFeeDisplay">$5,000.00</span>
+        </div>
+        <div class="gas-sub">Required for all transfers</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div class="action" onclick="openTransfer()">
+        <div class="action-icon" style="color:#3b82f6;">↔️</div>
+        <strong>Transfer</strong>
+      </div>
+      <div class="action" onclick="alert('Demo: Deposit simulated')">
+        <div class="action-icon" style="color:#eab308;">💰</div>
+        <strong>Deposit</strong>
+      </div>
+      <div class="action" onclick="alert('Demo: Cards page')">
+        <div class="action-icon" style="color:#eab308;">💳</div>
+        <strong>Cards</strong>
+      </div>
+      <div class="action" onclick="alert('Demo: 2FA Enabled')">
+        <div class="action-icon" style="color:#64748b;">⚙️</div>
+        <strong>Settings</strong>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Spending Overview</h2>
+      <canvas id="categoryChart" height="140"></canvas>
+    </div>
+
+    <div class="section">
+      <h2>Recent Transactions</h2>
+      <div class="transaction">
+        <div>
+          <div class="transaction-name">Salary Deposit</div>
+          <div class="transaction-date">August 15, 2026</div>
+        </div>
+        <div class="amount positive">+$8,500.00</div>
+      </div>
+      <div class="transaction">
+        <div>
+          <div class="transaction-name">Investment Return</div>
+          <div class="transaction-date">August 14, 2026</div>
+        </div>
+        <div class="amount positive">+$12,400.00</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Account Information</h2>
+      <p style="margin-bottom:8px;"><strong>Account type:</strong> Checking</p>
+      <p style="margin-bottom:8px;"><strong>Account number:</strong> •••• 4821</p>
+      <p style="margin-bottom:8px;"><strong>Status:</strong> Demo account</p>
+      <p><strong>Account Holder:</strong> <span id="accountHolder">Melissa Sue Rose</span></p>
+    </div>
+  </main>
+
+  <footer>
+    Horizon Banking Demo © 2026<br>
+    This website is fictional and has no real banking services.
+  </footer>
+</div>
+
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <h3>Profile</h3>
+    <p style="margin:10px 0;"><b>Name:</b> <span id="profileName"></span></p>
+    <p style="margin:10px 0;"><b>Email:</b> <span id="profileEmail"></span></p>
+    <p style="margin:10px 0;"><b>Account:</b> •••• 4821</p>
+    <button class="btn-primary" onclick="logout()">Logout</button>
+    <button class="btn-primary" style="background:#64748b; margin-top:10px;" onclick="closeModal('profileModal')">Close</button>
+  </div>
+</div>
+
+<div id="transferModal" class="modal">
+  <div class="modal-content">
+    <h3>Transfer Money</h3>
+    <input type="text" id="toAccount" placeholder="Recipient Account">
+    <input type="number" id="amount" placeholder="Amount $">
+    <p style="font-size:13px; color:#dc2626; margin:12px 0 8px;">
+      ⛽ Network Fee: <strong id="modalGasFee">$5,000.00</strong> is required to process any transfer
+    </p>
+    <p id="totalText" style="font-size:13px; font-weight:600; margin-bottom:14px; color:var(--text);"></p>
+    <button class="btn-primary" onclick="doTransfer()">Send + Pay Gas Fee</button>
+    <button class="btn-primary" style="background:#64748b; margin-top:10px;" onclick="closeModal('transferModal')">Cancel</button>
+  </div>
+</div>
+
+<script>
+  let GAS_FEE = 5000;
+  let BALANCE = 2000000;
+
+  let users = JSON.parse(localStorage.getItem('users')) || [
+    { email: "melissa@horizon.com", password: "password123", name: "Melissa Sue Rose" }
+  ];
+  let currentUser = null;
+
+  function showSignup() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('signupPage').style.display = 'flex';
+  }
+  function showLogin() {
+    document.getElementById('signupPage').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+  }
+
+  function signup() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('newEmail').value;
+    const password = document.getElementById('newPassword').value;
+    if (!name || !email || !password) return alert("Fill all fields");
+    users.push({ name, email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert("Demo account created!");
+    showLogin();
+  }
+
+  function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      currentUser = user;
+      document.getElementById('userName').innerText = user.name;
+      document.getElementById('accountHolder').innerText = user.name;
+      document.getElementById('profileName').innerText = user.name;
+      document.getElementById('profileEmail').innerText = user.email;
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      updateBalance();
+      loadChart();
+    } else {
+      document.getElementById('error').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+    closeModal('profileModal');
+  }
+
+  function openTransfer() {
+    document.getElementById('transferModal').style.display = 'flex';
+    document.getElementById('amount').addEventListener('input', updateTotal);
+    updateTotal();
+  }
+  function showProfile() {
+    document.getElementById('profileModal').style.display = 'flex';
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  function updateTotal() {
+    const amt = parseFloat(document.getElementById('amount').value) || 0;
+    const total = amt + GAS_FEE;
+    document.getElementById('totalText').innerText =
+      `You will send: $${amt.toLocaleString()} + Gas: $${GAS_FEE.toLocaleString()} = Total: $${total.toLocaleString()}`;
+  }
+
+  function updateBalance() {
+    document.getElementById('balanceAmount').innerText = `$${BALANCE.toLocaleString()}.00`;
+    document.getElementById('gasFeeDisplay').innerText = `$${GAS_FEE.toLocaleString()}.00`;
+    document.getElementById('modalGasFee').innerText = `$${GAS_FEE.toLocaleString()}.00`;
+  }
+
+  function doTransfer() {
+    const amt = parseFloat(document.getElementById('amount').value);
+    const to = document.getElementById('toAccount').value;
+    const total = amt + GAS_FEE;
+
+    if (!to || !amt || amt <= 0) return alert("Fill all fields with valid amount");
+
+    if (total > BALANCE) {
+      return alert(
+        `Insufficient Funds.\nYou need $${total.toLocaleString()} but you only have $${BALANCE.toLocaleString()}\n\n⛽ $${GAS_FEE.toLocaleString()} Gas Fee is required first.`
+      );
+    }
+
+    BALANCE = BALANCE - total;
+    updateBalance();
+
+    alert(
+      `Demo Transfer Successful!\n\nSent: $${amt.toLocaleString()} to ${to}\n⛽ Gas Fee: $${GAS_FEE.toLocaleString()}\nTotal Deducted: $${total.toLocaleString()}\n\nNew Balance: $${BALANCE.toLocaleString()}\n\nNo real money moved. This is a demo.`
+    );
+    closeModal('transferModal');
+    document.getElementById('amount').value = '';
+    document.getElementById('toAccount').value = '';
+    document.getElementById('totalText').innerText = '';
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+  }
+
+  function loadChart() {
+    const ctx = document.getElementById('categoryChart');
+    if (ctx._chart) ctx._chart.destroy();
+    ctx._chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Rent', 'Shopping', 'Food', 'Bills'],
+        datasets: [{
+          data: [2200, 1299, 450, 600],
+          backgroundColor: ['#0f1c2e', '#3b82f6', '#22c55e', '#f59e0b']
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  }
+</script>
+</body>
+</html>
